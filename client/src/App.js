@@ -13,6 +13,8 @@ import { useParams } from 'react-router-dom'; // Import useParams to access URL 
 import Messages from './components/Messages';
 import Layout from './components/Layout'; // Import the Layout component
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import FitnessAI from './components/fitness'; // Correct path if inside components folder
+
 
 const App = () => {
   return (
@@ -58,6 +60,12 @@ const App = () => {
       <Route 
         path="/messages/:userId" 
         element={<PrivateRoute element={<Layout><ChatPage /></Layout>} />} 
+      />
+
+      {/* Fitness AI Route */}
+      <Route 
+        path="/fitness-ai" 
+        element={<PrivateRoute element={<Layout><FitnessAI /></Layout>} />} 
       />
 
       {/* Catch-all route for 404 */}

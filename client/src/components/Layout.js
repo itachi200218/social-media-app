@@ -7,6 +7,7 @@ const Layout = ({ children }) => {
   const [hovered, setHovered] = useState(false); // Track if footer is being hovered
   const [activeLink, setActiveLink] = useState(''); // Track the active footer link
   const navigate = useNavigate();
+  const [fitnessStarted, setFitnessStarted] = useState(false); // Track if fitness AI is started
   let timer; // Store the timer to clear when needed
 
   // Shrink the footer after 2 seconds of inactivity
@@ -53,15 +54,30 @@ const Layout = ({ children }) => {
     return () => clearTimeout(timer);
   }, [hovered]); // Re-run the effect whenever `hovered` changes
 
+  // Function to trigger Fitness AI through the backend
+  const handleStartFitness = () => {
+    fetch('http://localhost:3001S/start-fitness', { // Ensure the URL is correct
+      method: 'POST',
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        setFitnessStarted(true); // Update state when the fitness AI has started
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error starting Fitness AI:', error);
+      });
+  };
+
   return (
     <div className="layout-container">
       <div className="content">
-        {children}  {/* Main page content */}
+        {children} {/* Main page content */}
       </div>
 
       {/* Footer - fixed at the bottom */}
-      <footer 
-        className={`feed-footer ${isShrunk ? 'shrunk' : ''}`} 
+      <footer
+        className={`feed-footer ${isShrunk ? 'shrunk' : ''}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -93,6 +109,15 @@ const Layout = ({ children }) => {
             onClick={() => handleLinkClick('notifications')}
           >
             <i className="fas fa-bell"></i> Notifications
+          </Link>
+
+          {/* Fitness AI link */}
+          <Link
+            to="/fitness-ai"
+            className="fitness-btn"
+            onClick={handleStartFitness}
+          >
+            Start Fitness AI
           </Link>
 
           {/* Logout link */}

@@ -1,20 +1,59 @@
 const express = require('express');
+const path = require('path');
+const { spawn } = require('child_process'); // This allows you to run Python scripts
 require('dotenv').config(); // Load environment variables from .env
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+// Import route files (auth, posts, etc.)
 const authRoutes = require('./routers/auth');         // /api/auth
 const postsRoutes = require('./routers/posts');       // /api/posts
 const dashboardRoutes = require('./routers/dashboard'); // /api/dashboard
 const authenticateToken = require('./middleware/auth'); // Middleware to verify JWT
 const messageRoutes = require('./routers/messages');
-const app = express();
 
-// Middleware
-app.use(cors({
-  origin: '*',  // Allow all domains to access your API
-}));
+// Initialize the app
+const app = express();
+const port = 3000;
+
+// Middleware for CORS and JSON handling
+app.use(cors({ origin: '*' })); // Allow all domains to access your API
 app.use(express.json());
+
+// Serve static files (like JS, CSS)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Home route (serving index.html)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Fitness AI route (serving the fitness AI page)
+app.get('/fitness', (req, res) => {
+    res.sendFile(path.join(__dirname, 'fitness.html'));
+});
+
+// Route to trigger the fitness AI Python script
+app.post('/start-fitness', (req, res) => {
+    const pythonProcess = spawn('python', ['fitness_ai.py']); // Run the Python script
+
+    pythonProcess.stdout.on('data', (data) => {
+        // Convert buffer to string and parse JSON
+        const result = JSON.parse(data.toString());
+        console.log(result);
+
+        // Send the result back to the client
+        res.json(result);  // Send the result to the client
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error('Error:', data.toString());
+    });
+
+    pythonProcess.on('close', (code) => {
+        console.log(`Python process exited with code ${code}`);
+    });
+});
 
 // Root route
 app.get('/', (req, res) => {
@@ -31,7 +70,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/messages', messageRoutes);
-
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URL, {
