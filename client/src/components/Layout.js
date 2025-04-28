@@ -44,6 +44,7 @@ const Layout = ({ children }) => {
     else if (path.includes('post')) setActiveLink('posts');
     else if (path.includes('feed')) setActiveLink('feed');
     else if (path.includes('notifications')) setActiveLink('notifications');
+    else if (path.includes('fitness-ai')) setActiveLink('fitness-ai'); // New check for fitness-ai
   }, [window.location.pathname]);
 
   // Start the shrink timer when the page loads
@@ -114,10 +115,10 @@ const Layout = ({ children }) => {
           {/* Fitness AI link */}
           <Link
             to="/fitness-ai"
-            className="fitness-btn"
+            className={activeLink === 'fitness-ai' ? 'active fitness-btn' : 'fitness-btn'}
             onClick={handleStartFitness}
           >
-            Start Fitness AI
+            <i className="fas fa-dumbbell"></i> Fitness AI
           </Link>
 
           {/* Logout link */}
