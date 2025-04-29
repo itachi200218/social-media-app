@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Register.css'; // Import the corresponding CSS file
+import './Register.css';
+import { API_BASE_URL } from '../utils/config'; // ✅ import config
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -16,18 +17,17 @@ const Register = () => {
     setSuccess('');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         username,
         password,
       });
 
       console.log(res.data);
 
-      // Show success message before redirecting
       setSuccess('🎉 Registration successful! Redirecting to login...');
       setTimeout(() => {
         navigate('/login');
-      }, 2000); // Redirect after 2 seconds
+      }, 2000);
     } catch (err) {
       setError('Registration failed. Try again.');
     }
@@ -81,3 +81,4 @@ const Register = () => {
 };
 
 export default Register;
+
