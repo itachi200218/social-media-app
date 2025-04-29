@@ -4,31 +4,30 @@ import './Layout.css'; // Import updated CSS
 
 const Layout = ({ children }) => {
   const [isShrunk, setIsShrunk] = useState(true); // Start with footer shrunk
-  const [hovered, setHovered] = useState(false); // Track if footer is being hovered
+  const [isHovered, setIsHovered] = useState(false); // Track if footer is being hovered
   const [activeLink, setActiveLink] = useState(''); // Track the active footer link
   const navigate = useNavigate();
-  const [fitnessStarted, setFitnessStarted] = useState(false); // Track if fitness AI is started
   let timer; // Store the timer to clear when needed
 
   // Shrink the footer after 2 seconds of inactivity
   const startShrinkTimer = () => {
-    if (!hovered) {
+    if (!isHovered) {
       timer = setTimeout(() => {
         setIsShrunk(true); // Shrink footer after 2 seconds of no hover
       }, 2000);
     }
   };
 
-  // Expand the footer on hover
+  // Expand the footer on hover (slightly)
   const handleMouseEnter = () => {
-    setHovered(true);
-    setIsShrunk(false); // Expand the footer immediately
+    setIsHovered(true);
+    setIsShrunk(false); // Expand the footer slightly on hover
     clearTimeout(timer); // Clear any pending shrink timers
   };
 
   // Shrink the footer after mouse leaves
   const handleMouseLeave = () => {
-    setHovered(false);
+    setIsHovered(false);
     startShrinkTimer(); // Start shrink timer after mouse leaves
   };
 
@@ -53,7 +52,7 @@ const Layout = ({ children }) => {
 
     // Cleanup the timer when the component is unmounted
     return () => clearTimeout(timer);
-  }, [hovered]); // Re-run the effect whenever `hovered` changes
+  }, [isHovered]); // Re-run the effect whenever `isHovered` changes
 
   // Function to trigger Fitness AI through the backend
   const handleStartFitness = () => {
@@ -62,7 +61,6 @@ const Layout = ({ children }) => {
     })
       .then((response) => response.text())
       .then((data) => {
-        setFitnessStarted(true); // Update state when the fitness AI has started
         console.log(data);
       })
       .catch((error) => {
@@ -78,7 +76,7 @@ const Layout = ({ children }) => {
 
       {/* Footer - fixed at the bottom */}
       <footer
-        className={`feed-footer ${isShrunk ? 'shrunk' : ''}`}
+        className={`feed-footer ${isShrunk ? 'shrunk' : 'expanded'}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
