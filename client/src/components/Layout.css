@@ -4,85 +4,88 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: black !important;
-  color: white;
+  background-color: black !important; /* Ensures the background stays black */
+  color: white; /* Text color for better contrast */
   padding: 12px 0;
-  border-top: 1px solid #444;
+  border-top: 1px solid #444; /* Darker border for a cleaner look */
   text-align: center;
   z-index: 10;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  transition: padding 0.3s ease, font-size 0.3s ease;
-  width: 100%; /* Make sure the footer spans across the entire screen */
-  overflow-x: auto; /* Allow horizontal scrolling */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
+  transition: padding 0.3s ease, font-size 0.3s ease; /* Smooth transition for shrinking */
+}
+
+/* Slightly expanded footer - smaller padding but not fully shrunk */
+.feed-footer.expanded {
+  padding: 8px 0; /* Slightly smaller than the normal size */
+  font-size: 16px; /* Slightly smaller font size */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* A bit more prominent shadow when expanded */
 }
 
 /* Shrunk footer - smaller padding and font-size when shrunk */
 .feed-footer.shrunk {
-  padding: 6px 0;
-  font-size: 14px;
-  box-shadow: none;
+  padding: 6px 0; /* Shrink the padding */
+  font-size: 14px; /* Smaller font size */
+  box-shadow: none; /* Remove shadow when shrunk */
 }
 
 /* Footer links container */
 .footer-links {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; /* Align links to the left */
   align-items: center;
   gap: 40px;
-  width: auto; /* Use auto width to allow dynamic growth */
-  transition: transform 0.3s ease;
-  flex-wrap: nowrap; /* Prevent wrapping */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  padding: 0 10px; /* Add some padding to prevent links from touching the sides */
+  width: 100%; /* Use full width for links */
+  transition: transform 0.3s ease; /* Smooth transition for shrinking */
 }
 
 /* Style for the links */
 .footer-links a {
   text-decoration: none;
-  color: white;
+  color: white; /* White text color for links */
   font-weight: bold;
-  font-size: 18px;
-  transition: color 0.3s ease, transform 0.2s ease;
-  padding: 8px 12px;
-  display: inline-block;
+  font-size: 18px; /* Slightly smaller text size for better spacing */
+  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+  padding: 8px 12px; /* Ensure padding is the same for all links */
+  display: inline-block; /* Makes the links behave like buttons */
 }
 
 /* Shrunk footer links - smaller font size when shrunk */
 .feed-footer.shrunk .footer-links a {
-  font-size: 14px;
-  padding: 4px 8px;
+  font-size: 14px; /* Shrink link font size */
+  padding: 4px 8px; /* Reduce padding when footer shrinks */
 }
 
 /* Hover effect for links */
 .footer-links a:hover {
-  color: #3498db;
-  transform: translateY(-3px);
+  color: #3498db; /* Blue color on hover */
+  transform: translateY(-3px); /* Slight movement effect on hover */
 }
 
 /* Active link styling */
 .footer-links a.active {
-  color: #007bff;
-  font-weight: bold;
+  color: #007bff; /* Blue color for active link */
+  font-weight: bold; /* Make active link bold */
 }
 
 /* Styling for the logout button container */
 .logout-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Align logout button to the right */
   align-items: center;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  width: auto; /* Let it adjust based on content */
+  position: absolute; /* Absolute positioning to keep it at the right corner */
+  right: 20px; /* Stick to the far-right corner with some margin */
+  top: 50%; /* Vertically center the logout button */
+  transform: translateY(-50%); /* Perfect vertical centering */
 }
 
 /* Styling for the logout button (icon only) */
 .logout-button {
-  color: white;
-  font-size: 18px;
-  transition: color 0.3s ease, transform 0.2s ease;
-  display: inline-block;
-  padding: 4px 8px;
+  color: white; /* White icon color */
+  font-size: 18px; /* Same font size as other footer icons */
+  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+  display: inline-block; /* Make the icon behave like a clickable link */
+  padding: 4px 8px; /* Smaller padding to make it look like a small clickable pointer */
   cursor: pointer;
 }
 
@@ -92,7 +95,7 @@
   bottom: 10px;
   right: 20px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 20px; /* Icon size */
   color: white;
   transition: color 0.3s ease;
 }
