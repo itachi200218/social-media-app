@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Login.css';  // Import the CSS file
+import './Login.css'; // CSS styles
+import { API_BASE_URL } from '../utils/config'; // ✅ import the backend URL
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -11,18 +12,19 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-  
+
     try {
-      const response = await axios.post('https://social-media-app-sd36.onrender.com', { username, password });
+      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
       const { token, userId } = response.data;  // Ensure userId is returned by the API
       
       localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);  // Store userId in localStorage
-      
+      localStorage.setItem('userId', userId);
+
       toast.success('Login successful 🎉');
       navigate('/feed');
     } catch (error) {
@@ -33,7 +35,7 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="login-container">
       <div className="login-form">
@@ -58,7 +60,7 @@ const Login = () => {
             />
           </div>
 
-          {error && <p>{error}</p>}
+          {error && <p className="error">{error}</p>}
 
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
@@ -66,8 +68,10 @@ const Login = () => {
         </form>
 
         <p>
-          Don’t have an account? 
-          <span onClick={() => navigate('/register')}>Register here</span>
+          Don’t have an account?{' '}
+          <span onClick={() => navigate('/register')} className="register-link">
+            Register here
+          </span>
         </p>
       </div>
     </div>

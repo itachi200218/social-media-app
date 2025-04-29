@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import axios from 'axios'; // Import axios for API calls
+import { API_BASE_URL } from '../utils/config'; // ✅ Import the backend URL
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Dashboard = () => {
 
   const fetchUserData = async (userId) => {
     try {
-      const response = await axios.get(`/api/users/${userId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`);  // Use API_BASE_URL for user data
       setUserData(response.data);
       setLoading(false);  // Set loading to false once data is fetched
     } catch (error) {
@@ -40,7 +41,7 @@ const Dashboard = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('/api/posts');  // Example endpoint for posts
+      const response = await axios.get(`${API_BASE_URL}/api/posts`);  // Use API_BASE_URL for posts
       setPosts(response.data);
     } catch (error) {
       console.error('Error fetching posts', error);
@@ -49,7 +50,7 @@ const Dashboard = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get('/api/notifications');  // Example endpoint for notifications
+      const response = await axios.get(`${API_BASE_URL}/api/notifications`);  // Use API_BASE_URL for notifications
       setNotifications(response.data);
     } catch (error) {
       console.error('Error fetching notifications', error);
@@ -65,7 +66,7 @@ const Dashboard = () => {
   const handleProfileUpdate = async () => {
     try {
       const updatedData = { bio: bioInput, profilePicture: profilePic };
-      const response = await axios.put(`/api/users/${userId}`, updatedData);  // API endpoint to update user profile
+      const response = await axios.put(`${API_BASE_URL}/api/users/${userId}`, updatedData);  // Use API_BASE_URL for updating profile
       setUserData(response.data);
     } catch (error) {
       console.error('Error updating profile', error);

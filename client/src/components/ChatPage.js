@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaPaperPlane, FaHeart, FaSun, FaMoon, FaTrashAlt, FaSpinner } from 'react-icons/fa';
 import './ChatPage.css';
 import { colors } from './colors';
+import { API_BASE_URL } from '../utils/config';  // Importing the config file
 
 const ChatPage = () => {
   const { userId } = useParams();
@@ -46,7 +47,7 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/messages/${userId}`, {
+        const res = await axios.get(`${API_BASE_URL}/api/messages/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -65,7 +66,7 @@ const ChatPage = () => {
     if (!message.trim()) return;
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/messages',
+        `${API_BASE_URL}/api/messages`,
         { receiverId: userId, content: message },
         {
           headers: {
@@ -89,7 +90,7 @@ const ChatPage = () => {
       }
   
       // Send the DELETE request to delete the message
-      const res = await axios.delete(`http://localhost:5000/api/messages/${messageId}`, {
+      const res = await axios.delete(`${API_BASE_URL}/api/messages/${messageId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,  // Pass the token
         },
@@ -116,7 +117,7 @@ const ChatPage = () => {
     setClearStatus(""); // Clear any previous status message
   
     try {
-      const response = await fetch('http://localhost:5000/api/messages/clear', {
+      const response = await fetch(`${API_BASE_URL}/api/messages/clear`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token if required for authentication

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Post.css';
+import { API_BASE_URL } from '../utils/config'; // Importing the config file with the new API base URL
 
 const CreatePost = () => {
   const [content, setContent] = useState('');
@@ -29,7 +30,7 @@ const CreatePost = () => {
     }
 
     try {
-      const response = await axios.get('http://localhost:5000/api/posts', {
+      const response = await axios.get(`${API_BASE_URL}/api/posts`, {
         headers: {
           Authorization: `Bearer ${token}`, // Send the token in the Authorization header
         },
@@ -57,7 +58,7 @@ const CreatePost = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/posts',
+        `${API_BASE_URL}/api/posts`,
         { content, imageUrl },
         {
           headers: {
@@ -82,7 +83,7 @@ const CreatePost = () => {
   const handleDeletePost = async (postId) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/posts/${postId}`,
+        `${API_BASE_URL}/api/posts/${postId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -95,6 +96,29 @@ const CreatePost = () => {
     } catch (err) {
       alert('Error deleting post');
       console.error(err);
+    }
+  };
+
+  // Handle the like button click
+  const handleLikePost = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/posts/${postId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      // Update the post's like count optimistically
+      setPosts(posts.map((post) =>
+        post._id === postId ? { ...post, likes: response.data.likes } : post
+      ));
+    } catch (err) {
+      console.error('Error liking post:', err);
+      alert('Error liking post');
     }
   };
 
@@ -132,6 +156,15 @@ const CreatePost = () => {
               {post.image && (
                 <img src={post.image} alt="Post Image" className="post-image" />
               )}
+
+              {/* Display the like button and count */}
+              <button
+                className="like-button"
+                onClick={() => handleLikePost(post._id)}
+              >
+                Like {post.likes?.length || 0}
+              </button>
+
               <button
                 className="delete-button"
                 onClick={() => handleDeletePost(post._id)}

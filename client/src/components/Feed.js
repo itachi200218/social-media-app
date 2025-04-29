@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from './Layout'; // Import the Layout component
 import './Feed.css';
+import { API_BASE_URL } from '../utils/config'; // ✅ import the backend URL
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -12,14 +13,14 @@ const Feed = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get('http://localhost:5000/api/posts', {
+        .get(`${API_BASE_URL}/api/posts`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           setPosts(response.data);
         })
         .catch((error) => {
-          console.error(error);
+          console.error('Error fetching posts:', error);
         });
     } else {
       navigate('/login');
