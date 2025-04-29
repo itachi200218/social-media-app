@@ -4,81 +4,85 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: black !important; /* Ensures the background stays black */
-  color: white; /* Text color for better contrast */
+  background-color: black !important;
+  color: white;
   padding: 12px 0;
-  border-top: 1px solid #444; /* Darker border for a cleaner look */
+  border-top: 1px solid #444;
   text-align: center;
   z-index: 10;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
-  transition: padding 0.3s ease, font-size 0.3s ease; /* Smooth transition for shrinking */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  transition: padding 0.3s ease, font-size 0.3s ease;
+  width: 100%; /* Make sure the footer spans across the entire screen */
+  overflow-x: auto; /* Allow horizontal scrolling */
 }
 
 /* Shrunk footer - smaller padding and font-size when shrunk */
 .feed-footer.shrunk {
-  padding: 6px 0; /* Shrink the padding */
-  font-size: 14px; /* Smaller font size */
-  box-shadow: none; /* Remove shadow when shrunk */
+  padding: 6px 0;
+  font-size: 14px;
+  box-shadow: none;
 }
 
 /* Footer links container */
 .footer-links {
   display: flex;
-  justify-content: flex-start; /* Align links to the left */
+  justify-content: flex-start;
   align-items: center;
   gap: 40px;
-  width: 100%; /* Use full width for links */
-  transition: transform 0.3s ease; /* Smooth transition for shrinking */
+  width: auto; /* Use auto width to allow dynamic growth */
+  transition: transform 0.3s ease;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding: 0 10px; /* Add some padding to prevent links from touching the sides */
 }
 
 /* Style for the links */
 .footer-links a {
   text-decoration: none;
-  color: white; /* White text color for links */
+  color: white;
   font-weight: bold;
-  font-size: 18px; /* Slightly smaller text size for better spacing */
-  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
-  padding: 8px 12px; /* Ensure padding is the same for all links */
-  display: inline-block; /* Makes the links behave like buttons */
+  font-size: 18px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 8px 12px;
+  display: inline-block;
 }
 
 /* Shrunk footer links - smaller font size when shrunk */
 .feed-footer.shrunk .footer-links a {
-  font-size: 14px; /* Shrink link font size */
-  padding: 4px 8px; /* Reduce padding when footer shrinks */
+  font-size: 14px;
+  padding: 4px 8px;
 }
 
 /* Hover effect for links */
 .footer-links a:hover {
-  color: #3498db; /* Blue color on hover */
-  transform: translateY(-3px); /* Slight movement effect on hover */
+  color: #3498db;
+  transform: translateY(-3px);
 }
 
 /* Active link styling */
 .footer-links a.active {
-  color: #007bff; /* Blue color for active link */
-  font-weight: bold; /* Make active link bold */
+  color: #007bff;
+  font-weight: bold;
 }
 
 /* Styling for the logout button container */
 .logout-container {
   display: flex;
-  justify-content: flex-end; /* Align logout button to the right */
+  justify-content: flex-end;
   align-items: center;
-  width: auto; /* Let it adjust based on content */
-  position: absolute; /* Absolute positioning to keep it at the right corner */
-  right: 20px; /* Stick to the far-right corner with some margin */
-  top: 50%; /* Vertically center the logout button */
-  transform: translateY(-50%); /* Perfect vertical centering */
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Styling for the logout button (icon only) */
 .logout-button {
-  color: white; /* White icon color */
-  font-size: 18px; /* Same font size as other footer icons */
-  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
-  display: inline-block; /* Make the icon behave like a clickable link */
-  padding: 4px 8px; /* Smaller padding to make it look like a small clickable pointer */
+  color: white;
+  font-size: 18px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  padding: 4px 8px;
   cursor: pointer;
 }
 
@@ -88,7 +92,31 @@
   bottom: 10px;
   right: 20px;
   cursor: pointer;
-  font-size: 20px; /* Icon size */
+  font-size: 20px;
   color: white;
   transition: color 0.3s ease;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+  .feed-footer {
+    padding: 8px 0; /* Smaller padding for mobile */
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  /* Adjust the footer links */
+  .footer-links {
+    gap: 20px; /* Reduced gap for mobile */
+    font-size: 14px; /* Smaller font size */
+  }
+
+  .footer-links a {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  /* Allow wrapping for mobile screens if necessary */
+  .footer-links {
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+  }
 }
