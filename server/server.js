@@ -23,15 +23,7 @@ app.use(express.json());
 // Serve static files (like JS, CSS)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Home route (serving index.html)
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
 
-// Fitness AI route (serving the fitness AI page)
-app.get('/fitness', (req, res) => {
-    res.sendFile(path.join(__dirname, 'fitness.html'));
-});
 
 // Route to trigger the fitness AI Python script
 app.post('/start-fitness', (req, res) => {
