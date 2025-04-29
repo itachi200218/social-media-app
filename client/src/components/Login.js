@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Login.css'; // CSS styles
-import { API_BASE_URL } from '../utils/config'; // ✅ import the backend URL
+import './Login.css';
+import { API_BASE_URL } from '../utils/config'; // ✅ using config URL from utils folder
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,9 +19,10 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-      const { token, userId } = response.data;  // Ensure userId is returned by the API
-      
+      // ✅ Use API_BASE_URL instead of hardcoded localhost
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { username, password });
+      const { token, userId } = response.data;
+
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
 
