@@ -17,7 +17,7 @@ const Login = () => {
     setError('');
   
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
+      const response = await axios.post('https://social-media-app-sd36.onrender.com', { username, password });
       const { token, userId } = response.data;  // Ensure userId is returned by the API
       
       localStorage.setItem('token', token);
