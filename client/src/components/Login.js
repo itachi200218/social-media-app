@@ -19,20 +19,19 @@ const Login = () => {
     setError('');
 
     try {
-      // ✅ Send credentials to login API
+      // ✅ Use API_BASE_URL instead of hardcoded localhost
       const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { username, password });
-
-      const { token, user } = response.data; // ✅ Assuming backend sends `user` and `token`
+      const { token, userId } = response.data;
 
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user)); // ✅ Store the full user object
+      localStorage.setItem('userId', userId);
 
-      toast.success('Login successful!');
+      toast.success('Login successful 🎉');
       navigate('/feed');
     } catch (error) {
       console.error('Login error:', error);
       setError('Login failed. Please check your credentials and try again.');
-      toast.error('Login failed. Please check your credentials');
+      toast.error('Login failed. Please check your credentials ❌');
     } finally {
       setLoading(false);
     }
@@ -80,5 +79,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
+export default Login; see
