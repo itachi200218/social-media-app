@@ -103,7 +103,7 @@
 /* Media Query for smaller screens */
 @media (max-width: 768px) {
   .feed-footer {
-    padding: 8px 0; /* Smaller padding for mobile */
+    padding: 4px 0; /* Reduced vertical padding for mobile */
     font-size: 14px; /* Smaller font size for mobile */
   }
 
@@ -111,16 +111,11 @@
   .footer-links {
     gap: 20px; /* Reduced gap for mobile */
     font-size: 14px; /* Smaller font size */
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
   }
 
   .footer-links a {
     font-size: 14px;
-    padding: 6px 10px;
-  }
-
-  /* Allow wrapping for mobile screens if necessary */
-  .footer-links {
-    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+    padding: 4px 6px; /* Smaller padding for links on mobile */
   }
 }
-
