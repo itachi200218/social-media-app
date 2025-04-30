@@ -15,6 +15,13 @@
   width: 100%; /* Ensure it spans the full width */
 }
 
+/* Slightly expanded footer - smaller padding but not fully shrunk */
+.feed-footer.expanded {
+  padding: 8px 0; /* Slightly smaller than the normal size */
+  font-size: 16px; /* Slightly smaller font size */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* A bit more prominent shadow when expanded */
+}
+
 /* Shrunk footer - smaller padding and font-size when shrunk */
 .feed-footer.shrunk {
   padding: 6px 0; /* Shrink the padding */
@@ -92,30 +99,4 @@
   font-size: 20px; /* Icon size */
   color: white;
   transition: color 0.3s ease;
-}
-
-/* Media queries for mobile responsiveness */
-@media (max-width: 768px) {
-  /* For smaller screens, reduce padding and adjust layout */
-  .feed-footer {
-    padding: 8px 0; /* Reduce padding on smaller screens */
-  }
-
-  .footer-links {
-    gap: 20px; /* Reduce space between links */
-  }
-
-  .footer-links a {
-    font-size: 14px; /* Reduce font size for mobile */
-    padding: 6px 8px; /* Smaller padding for mobile */
-  }
-
-  /* Adjust the logout button */
-  .logout-container {
-    right: 10px; /* Reduce the margin on the right */
-  }
-  
-  .footer-arrow {
-    font-size: 18px; /* Smaller arrow icon on mobile */
-  }
 }
