@@ -20,7 +20,15 @@ const ChatPage = () => {
   const [clearStatus, setClearStatus] = useState(""); // State to track success/failure of clear action
 
   // Check if the user exists in localStorage and safely parse the user
-  const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+let currentUser = null;
+try {
+  const userString = localStorage.getItem('user');
+  currentUser = userString && userString !== "undefined" ? JSON.parse(userString) : null;
+} catch (err) {
+  console.error('Invalid JSON in localStorage for user:', err);
+  localStorage.removeItem('user'); // Clean up corrupted data
+}
+
 
   let colorIndex = 0;
 
