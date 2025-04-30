@@ -12,6 +12,7 @@
   z-index: 10;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
   transition: padding 0.3s ease, font-size 0.3s ease; /* Smooth transition for shrinking */
+  width: 100%; /* Ensure it spans the full width */
 }
 
 /* Shrunk footer - smaller padding and font-size when shrunk */
@@ -91,4 +92,30 @@
   font-size: 20px; /* Icon size */
   color: white;
   transition: color 0.3s ease;
+}
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 768px) {
+  /* For smaller screens, reduce padding and adjust layout */
+  .feed-footer {
+    padding: 8px 0; /* Reduce padding on smaller screens */
+  }
+
+  .footer-links {
+    gap: 20px; /* Reduce space between links */
+  }
+
+  .footer-links a {
+    font-size: 14px; /* Reduce font size for mobile */
+    padding: 6px 8px; /* Smaller padding for mobile */
+  }
+
+  /* Adjust the logout button */
+  .logout-container {
+    right: 10px; /* Reduce the margin on the right */
+  }
+  
+  .footer-arrow {
+    font-size: 18px; /* Smaller arrow icon on mobile */
+  }
 }
