@@ -19,8 +19,7 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false); // State to track loading
   const [clearStatus, setClearStatus] = useState(""); // State to track success/failure of clear action
 
-  // Check if the user exists in localStorage and safely parse the user
-  const currentUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const currentUser = JSON.parse(localStorage.getItem('user'));
 
   let colorIndex = 0;
 
@@ -235,7 +234,10 @@ const ChatPage = () => {
               <strong>{msg.sender.username}:</strong> {msg.content}
               <span className="message-timestamp">{formatTimestamp(msg.timestamp)}</span>
               {(isSelf || currentUser?.isAdmin) && (
-                <button className="delete-message-btn" onClick={() => deleteMessage(msg._id)}>
+                <button
+                  className="delete-btn"
+                  onClick={() => deleteMessage(msg._id)}
+                >
                   Delete
                 </button>
               )}
@@ -244,15 +246,20 @@ const ChatPage = () => {
         })}
       </div>
 
-      <div className="message-input-container">
+      <div className="input-container">
         <input
           type="text"
-          placeholder="Type a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
+          placeholder="Type a message..."
         />
-        <button className="send-btn" onClick={sendMessage}>
+        <button onClick={sendMessage}>
           <FaPaperPlane />
         </button>
       </div>

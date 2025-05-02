@@ -1,102 +1,114 @@
-/* Footer styles */
+/* Base Footer styles */
 .feed-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: black !important; /* Ensures the background stays black */
-  color: white; /* Text color for better contrast */
-  padding: 12px 0;
-  border-top: 1px solid #444; /* Darker border for a cleaner look */
-  text-align: center;
-  z-index: 10;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
-  transition: padding 0.3s ease, font-size 0.3s ease; /* Smooth transition for shrinking */
-  width: 100%; /* Ensure it spans the full width */
+  background-color: black !important;
+  color: white;
+  padding: 10px 16px;
+  border-top: 1px solid #444;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 14px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  transition: padding 0.3s ease, font-size 0.3s ease;
 }
 
-/* Slightly expanded footer - smaller padding but not fully shrunk */
+/* Expanded footer */
 .feed-footer.expanded {
-  padding: 8px 0; /* Slightly smaller than the normal size */
-  font-size: 16px; /* Slightly smaller font size */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* A bit more prominent shadow when expanded */
+  padding: 8px 16px;
+  font-size: 16px;
 }
 
-/* Shrunk footer - smaller padding and font-size when shrunk */
+/* Shrunk footer */
 .feed-footer.shrunk {
-  padding: 6px 0; /* Shrink the padding */
-  font-size: 14px; /* Smaller font size */
-  box-shadow: none; /* Remove shadow when shrunk */
+  padding: 6px 12px;
+  font-size: 13px;
+  box-shadow: none;
 }
 
-/* Footer links container */
+/* Footer links */
 .footer-links {
   display: flex;
-  justify-content: flex-start; /* Align links to the left */
+  flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: center;
-  gap: 40px;
-  width: 100%; /* Use full width for links */
-  transition: transform 0.3s ease; /* Smooth transition for shrinking */
+  gap: 16px;
+  flex: 1;
+  min-width: 180px;
 }
 
-/* Style for the links */
 .footer-links a {
+  color: white;
   text-decoration: none;
-  color: white; /* White text color for links */
-  font-weight: bold;
-  font-size: 18px; /* Slightly smaller text size for better spacing */
-  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
-  padding: 8px 12px; /* Ensure padding is the same for all links */
-  display: inline-block; /* Makes the links behave like buttons */
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 6px;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-/* Shrunk footer links - smaller font size when shrunk */
-.feed-footer.shrunk .footer-links a {
-  font-size: 14px; /* Shrink link font size */
-  padding: 4px 8px; /* Reduce padding when footer shrinks */
-}
-
-/* Hover effect for links */
 .footer-links a:hover {
-  color: #3498db; /* Blue color on hover */
-  transform: translateY(-3px); /* Slight movement effect on hover */
+  color: #3498db;
+  transform: translateY(-2px);
 }
 
-/* Active link styling */
 .footer-links a.active {
-  color: #007bff; /* Blue color for active link */
-  font-weight: bold; /* Make active link bold */
+  color: #007bff;
 }
 
-/* Styling for the logout button container */
+/* Logout */
 .logout-container {
   display: flex;
-  justify-content: flex-end; /* Align logout button to the right */
+  justify-content: flex-end;
   align-items: center;
-  width: auto; /* Let it adjust based on content */
-  position: absolute; /* Absolute positioning to keep it at the right corner */
-  right: 20px; /* Stick to the far-right corner with some margin */
-  top: 50%; /* Vertically center the logout button */
-  transform: translateY(-50%); /* Perfect vertical centering */
+  flex-shrink: 0;
 }
 
-/* Styling for the logout button (icon only) */
 .logout-button {
-  color: white; /* White icon color */
-  font-size: 18px; /* Same font size as other footer icons */
-  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
-  display: inline-block; /* Make the icon behave like a clickable link */
-  padding: 4px 8px; /* Smaller padding to make it look like a small clickable pointer */
+  color: white;
+  font-size: 16px;
+  padding: 4px 6px;
   cursor: pointer;
 }
 
-/* Arrow icon for shrinking footer */
+/* Optional arrow icon */
 .footer-arrow {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  cursor: pointer;
-  font-size: 20px; /* Icon size */
+  font-size: 18px;
   color: white;
-  transition: color 0.3s ease;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 600px) {
+  .feed-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 12px;
+  }
+
+  .footer-links {
+    width: 100%;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .logout-container {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .logout-button {
+    font-size: 14px;
+  }
+
+  .main-content {
+    padding-bottom: 60px; /* matches footer height */
+  }
 }

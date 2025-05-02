@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
+// POST /register - Register a new user
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;  // Extract username and password from the request body
 
@@ -68,14 +69,17 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Authentication middleware to verify JWT token
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
+
   try {
+    // Verify token and attach user data to the request
     const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
+    req.user = verified;  // Attach verified user data to req.user
     next();
   } catch (err) {
     console.error('JWT verification failed:', err);
@@ -83,15 +87,15 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-
 // Example of a protected route using the authentication middleware
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);  // Use user ID from JWT payload
+    // Find user by ID from the JWT payload (req.user._id)
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
+
     // Exclude password before sending the user data
     const { password, ...userData } = user._doc;
     res.status(200).json(userData);  // Send user data excluding password

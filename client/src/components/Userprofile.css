@@ -1,0 +1,154 @@
+/* UserProfile.css */
+
+/* General Container */
+.user-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+/* Profile Box */
+.profile-box {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-box:hover {
+  transform: scale(1.02);
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #FF4081;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+  border-color: #FF80AB;
+}
+
+/* Profile Picture Upload Button */
+.upload-container {
+  margin-top: 1rem;
+}
+
+.upload-button {
+  background-color: #FF4081;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: none;
+  font-weight: 600;
+}
+
+.upload-button:hover {
+  background-color: #FF80AB;
+  transform: translateY(-3px);
+}
+
+.upload-button:active {
+  transform: translateY(2px);
+}
+
+/* Input Fields */
+.edit-info {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.edit-info label {
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #FF4081;
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.6);
+}
+
+/* Save Button */
+.save-button-container {
+  margin-top: 2rem;
+}
+
+.save-button {
+  background-color: #00BFAE;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: none;
+  font-weight: 600;
+}
+
+.save-button:hover {
+  background-color: #1DBAC3;
+  transform: translateY(-3px);
+}
+
+.save-button:active {
+  transform: translateY(2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .user-profile {
+    height: auto;
+    padding: 10px;
+  }
+
+  .profile-box {
+    padding: 1.5rem;
+  }
+
+  .profile-pic {
+    width: 100px;
+    height: 100px;
+  }
+
+  .upload-button {
+    padding: 8px 16px;
+  }
+
+  .input-field {
+    font-size: 0.9rem;
+  }
+
+  .save-button {
+    padding: 10px 20px;
+  }
+}
+

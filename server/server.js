@@ -11,19 +11,39 @@ const postsRoutes = require('./routers/posts');
 const dashboardRoutes = require('./routers/dashboard');
 const messageRoutes = require('./routers/messages');
 const authenticateToken = require('./middleware/auth');
+const userRoutes = require('./routers/users');
 
 // Initialize the app
 const app = express();
 
-// ✅ CORS setup for frontend on Vercel
+// ✅ Allow local and deployed frontends dynamically
+const allowedOrigins = [
+  process.env.CLIENT_URL, // Local URL
+  process.env.PRODUCTION_URL // Production URL
+];
+
+// ✅ CORS middleware
 app.use(cors({
-  origin: 'https://social-media-app-nu-two.vercel.app',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., curl, mobile apps)
+    if (!origin) return callback(null, true);
+    
+    // If the origin matches one of the allowed URLs
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
-// ✅ Additional CORS headers to support iPhone (Safari)
+// ✅ CORS headers manually set for extra support (e.g. Safari)
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://social-media-app-nu-two.vercel.app");
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -36,26 +56,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Fitness AI route (serving the fitness AI page)
 app.get('/fitness', (req, res) => {
-    res.sendFile(path.join(__dirname, 'fitness.html'));
+  res.sendFile(path.join(__dirname, 'fitness.html'));
 });
 
 // Route to trigger the fitness AI Python script
 app.post('/start-fitness', (req, res) => {
-    const pythonProcess = spawn('python', ['fitness_ai.py']);
+  const pythonProcess = spawn('python', ['fitness_ai.py']);
 
-    pythonProcess.stdout.on('data', (data) => {
-        const result = JSON.parse(data.toString());
-        console.log(result);
-        res.json(result);
-    });
+  pythonProcess.stdout.on('data', (data) => {
+    const result = JSON.parse(data.toString());
+    console.log(result);
+    res.json(result);
+  });
 
-    pythonProcess.stderr.on('data', (data) => {
-        console.error('Error:', data.toString());
-    });
+  pythonProcess.stderr.on('data', (data) => {
+    console.error('Error:', data.toString());
+  });
 
-    pythonProcess.on('close', (code) => {
-        console.log(`Python process exited with code ${code}`);
-    });
+  pythonProcess.on('close', (code) => {
+    console.log(`Python process exited with code ${code}`);
+  });
 });
 
 // Root route
@@ -73,6 +93,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/users', userRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URL, {

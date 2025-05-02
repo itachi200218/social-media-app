@@ -1,125 +1,148 @@
-/* General container for the dashboard */
-.dashboard-container {
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Dashboard Container */
+.dashboard {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #1c1c1c 0%, #434343 100%);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 3rem;
-  color: #e0e0e0;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Dashboard content styling */
-.dashboard-content {
-  background-color: #222222;
-  border-radius: 16px;
-  padding: 3rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 100%;
-  max-width: 700px;
-  margin-bottom: 100px; /* Ensure there's space for the footer */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-/* Heading styling */
-h2 {
-  color: #FF4081;
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-h2:hover {
-  color: #FF80AB;
-  transform: translateY(-5px);
-}
-
-/* Feed section at the bottom */
-.feed-section {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #222222;
-  padding: 10px 0;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  z-index: 1000; /* Make sure it stays above the content */
-}
-
-/* Post card style */
-.post-card {
-  background-color: #ffffff;
-  padding: 15px;
-  margin: 10px;
+/* Profile Box */
+.profile-box {
+  background-color: white;
   border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 350px;
+  text-align: center;
+  padding: 30px 20px;
+  transition: transform 0.3s ease;
 }
 
-.post-card p {
-  font-size: 18px;
-  color: #333;
+.profile-box:hover {
+  transform: translateY(-5px); /* Slight hover effect */
 }
 
-/* Profile info styling */
-.profile-section {
-  position: fixed;
-  bottom: 80px; /* Adjust the position to appear above the posts */
-  left: 20px;
-  right: 20px;
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 999; /* Ensure it stays above the feed */
-}
-
+/* Profile Header */
 .profile-header {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-.profile-picture {
-  width: 60px;
-  height: 60px;
+/* Profile Picture */
+.dashboard-profile-pic {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  margin-right: 10px;
+  object-fit: cover;
+  border: 4px solid #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Links for profile */
-a {
-  color: #00BFAE;
-  text-decoration: none;
+/* Username */
+h2 {
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Bio */
+p.bio {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+/* Stats (Following, Followers) */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats div span {
   font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.stats div p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Button Styles */
+.dashboard-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.dashboard-buttons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
   font-weight: 500;
-  transition: color 0.3s ease;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-a:hover {
-  color: #1DBAC3;
-  text-decoration: underline;
+.dashboard-buttons button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
 }
 
-/* Responsive design for smaller screens */
+.dashboard-buttons button:active {
+  transform: translateY(1px);
+}
+
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .dashboard-container {
-      padding: 2rem;
-  }
-
-  .dashboard-content {
-      width: 90%;
-      padding: 2.5rem;
+  .profile-box {
+    width: 100%;
+    padding: 20px;
   }
 
   h2 {
-      font-size: 2.4rem;
+    font-size: 1.5rem;
   }
 
-  .profile-section, .feed-section {
-      padding: 10px;
+  p {
+    font-size: 0.9rem;
+  }
+
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dashboard-buttons {
+    flex-direction: column;
+    gap: 10px;
   }
 }

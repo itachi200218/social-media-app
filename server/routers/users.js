@@ -1,101 +1,82 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const User = require('../models/User');  // Import your User model
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const authMiddleware = require('../middleware/auth');
+const User = require('../models/User');
 
+// Create 'uploads/' directory if it doesn't exist
+const uploadDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
+// Set up Multer storage for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir); // Use the created uploads directory
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext); // Save file with timestamp to avoid name conflicts
+  },
+});
 
-router.get('/', async (req, res) => {
-    try {
-      const users = await User.find();
-      res.status(200).json(users);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      res.status(500).json({ message: 'Server error' });
-    }
-  });
-  
-// Fetch user by ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+const upload = multer({ storage });
 
+// Serve the uploaded files
+router.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// GET user profile
+router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    const userId = req.user.id || req.user._id;
+    if (!userId) {
+      return res.status(401).json({ message: 'Invalid token payload' });
     }
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Error fetching user by ID:', error);
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({
+      username: user.username,
+      bio: user.bio,
+      profilePicture: user.profilePicture, // Assuming profilePicture is a field in your User model
+    });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
-// Follow a user
-router.post('/follow', async (req, res) => {
-    const { followerId, followingId } = req.body;
-  
-    // Check if the provided IDs are valid
-    if (!mongoose.Types.ObjectId.isValid(followerId) || !mongoose.Types.ObjectId.isValid(followingId)) {
-      return res.status(400).json({ message: 'Invalid user ID' });
+
+// PUT update user profile (with file upload for profile picture)
+router.put('/profile', authMiddleware, upload.single('profilePicture'), async (req, res) => {
+  try {
+    const { username, bio } = req.body;
+    const userId = req.user.id || req.user._id;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'Invalid token payload' });
     }
-  
-    try {
-      const follower = await User.findById(followerId);
-      const following = await User.findById(followingId);
-  
-      if (!follower || !following) {
-        return res.status(404).json({ message: 'User(s) not found' });
-      }
-  
-      if (follower.following.includes(followingId)) {
-        return res.status(400).json({ message: 'You are already following this user' });
-      }
-  
-      follower.following.push(followingId);
-      following.followers.push(followerId);
-  
-      await follower.save();
-      await following.save();
-  
-      res.status(200).json({ message: 'Followed successfully' });
-    } catch (error) {
-      console.error('Error following user:', error);
-      res.status(500).json({ message: 'Server error' });
+
+    const updatedData = {
+      username,
+      bio,
+    };
+
+    // If a new profile picture is uploaded, include it in the update
+    if (req.file) {
+      updatedData.profilePicture = `http://localhost:5000/uploads/${req.file.filename}`;
     }
-  });
-  
-  // Unfollow a user
-  router.post('/unfollow', async (req, res) => {
-    const { followerId, followingId } = req.body;
-  
-    // Check if the provided IDs are valid
-    if (!mongoose.Types.ObjectId.isValid(followerId) || !mongoose.Types.ObjectId.isValid(followingId)) {
-      return res.status(400).json({ message: 'Invalid user ID' });
-    }
-  
-    try {
-      const follower = await User.findById(followerId);
-      const following = await User.findById(followingId);
-  
-      if (!follower || !following) {
-        return res.status(404).json({ message: 'User(s) not found' });
-      }
-  
-      if (!follower.following.includes(followingId)) {
-        return res.status(400).json({ message: 'You are not following this user' });
-      }
-  
-      follower.following = follower.following.filter(id => id.toString() !== followingId);
-      following.followers = following.followers.filter(id => id.toString() !== followerId);
-  
-      await follower.save();
-      await following.save();
-  
-      res.status(200).json({ message: 'Unfollowed successfully' });
-    } catch (error) {
-      console.error('Error unfollowing user:', error);
-      res.status(500).json({ message: 'Server error' });
-    }
-  });
-  
+
+    // Update the user in the database
+    const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+    res.json({ message: 'Profile updated', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

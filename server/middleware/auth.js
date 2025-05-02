@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
+  // Extract token from Authorization header
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {
@@ -8,12 +9,13 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
+    // Verify token using JWT secret
     const verified = jwt.verify(token, process.env.JWT_SECRET);
 
     // Attach the user data to the request object
     req.user = verified;
 
-    console.log(req.user); // Check the attached user data (should include username, userId, email, etc.)
+    console.log('Decoded JWT user:', req.user); // Log to ensure the user data is attached
 
     next();
   } catch (err) {
