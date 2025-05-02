@@ -19,7 +19,16 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false); // State to track loading
   const [clearStatus, setClearStatus] = useState(""); // State to track success/failure of clear action
 
-  const currentUser = JSON.parse(localStorage.getItem('user'));
+  // Check if the user exists in localStorage and safely parse the user
+let currentUser = null;
+try {
+  const userString = localStorage.getItem('user');
+  currentUser = userString && userString !== "undefined" ? JSON.parse(userString) : null;
+} catch (err) {
+  console.error('Invalid JSON in localStorage for user:', err);
+  localStorage.removeItem('user'); // Clean up corrupted data
+}
+
 
   let colorIndex = 0;
 
@@ -268,3 +277,4 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
