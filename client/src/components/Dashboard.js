@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../utils/config'; // ✅ import the backend URL
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Fetch the updated user data from the server
     axios
-      .get('http://localhost:5000/api/users/profile', {
+      .get(`${API_BASE_URL}/api/users/profile`, {  // Use the API_BASE_URL here
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +39,6 @@ const Dashboard = () => {
           <div className="dashboard-buttons">
             <button onClick={() => navigate('/followers')}>Followers</button>
             <button onClick={() => navigate('/following')}>Following</button>
-            {/* Add a button to navigate to Userprofile page */}
             <button onClick={() => navigate('/user-profile')}>Go to User Profile</button>
           </div>
         </div>

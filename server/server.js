@@ -22,33 +22,21 @@ const allowedOrigins = [
   process.env.PRODUCTION_URL // Production URL
 ];
 
-// ✅ CORS middleware
+// ✅ CORS middleware setup
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (e.g., curl, mobile apps)
     if (!origin) return callback(null, true);
     
-    // If the origin matches one of the allowed URLs
+    // If the origin matches one of the allowed URLs, allow the request
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
-
-// ✅ CORS headers manually set for extra support (e.g. Safari)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
 
 // Middleware
 app.use(express.json());
