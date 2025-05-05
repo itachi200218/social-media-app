@@ -1,0 +1,260 @@
+/* Overall page style for gemini-chat-page */
+.gemini-chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    background-color: #121212;
+    color: #fff;
+    position: relative; /* For absolutely positioned elements */
+}
+
+/* Chatbox area */
+.chatbox {
+    position: absolute; /* Absolutely position the chatbox */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #1a1a1a;
+    overflow-y: auto;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Messages container */
+.messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between messages */
+    max-height: 100%;
+}
+
+/* Message styles */
+.message {
+    display: flex;
+    width: 100%; /* Full width */
+    padding: 12px 0;
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+}
+
+/* Gemini message alignment */
+.message.gemini {
+    justify-content: flex-start;
+}
+
+/* User message alignment */
+.message.user {
+    justify-content: flex-end;
+}
+
+/* Message bubble */
+.message-bubble {
+    width: 100%; /* Full width for messages */
+    max-width: 95%; /* Limit width to 95% of container */
+    border-radius: 12px;
+    padding: 15px;
+    margin: 8px 0;
+    background-color: #333;
+    color: #fff;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+/* Gemini message bubble */
+.message.gemini .message-bubble {
+    background-color: #444;
+    text-align: left;
+}
+
+/* User message bubble */
+.message.user .message-bubble {
+    background-color: #2e3b44;
+    text-align: right;
+}
+
+/* Hover effect for messages */
+.message:hover {
+    transform: translateY(-4px);
+    background-color: #444;
+    cursor: pointer;
+}
+
+/* Input area container */
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background-color: #1b1b1b;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid #333;
+    transition: background-color 0.3s ease;
+}
+
+/* Input field */
+input {
+    width: 85%;
+    padding: 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #fff;
+    outline: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Focused input field */
+input:focus {
+    border-color: #4b9cdb;
+    background-color: #444;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #1976d2;
+}
+
+button:active {
+    background-color: #1565c0;
+    transform: scale(0.98);
+}
+
+/* Spinner and typing animation */
+.spinner-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background-color: #333;
+    border-radius: 10px;
+    margin: 12px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #e0e0e0;
+    border-top: 3px solid #4b9cdb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.typing {
+    font-style: italic;
+    color: #fff;
+    font-size: 16px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    /* Adjust message bubbles on small screens */
+    .message-bubble {
+        max-width: 90%; /* Slightly more narrow for smaller screens */
+    }
+
+    /* Input field adjustment */
+    input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Input container adjustments */
+    .input-container {
+        padding: 10px;
+    }
+
+    /* Chatbox padding for smaller screens */
+    .chatbox {
+        padding: 8px;
+    }
+
+    /* Messages container padding */
+    .messages {
+        padding: 8px;
+    }
+
+    /* Adjust spacing of spinner */
+    .spinner-wrapper {
+        padding: 10px 14px;
+    }
+
+    /* Adjust font size for typing indicator */
+    .typing {
+        font-size: 14px;
+    }
+
+    /* Adjust spacing between message and input */
+    .input-container {
+        margin-top: 10px;
+    }
+
+    /* Ensure no horizontal scrollbar on small screens */
+    .gemini-chat-page {
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Further reduce padding on very small screens */
+    .message-bubble {
+        max-width: 85%; /* Limit bubble width */
+        padding: 12px;
+    }
+
+    /* Adjust the font size for the input field */
+    input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+
+    /* Chatbox padding */
+    .chatbox {
+        padding: 6px;
+    }
+
+    /* Reduced padding for messages */
+    .messages {
+        padding: 6px;
+    }
+}
