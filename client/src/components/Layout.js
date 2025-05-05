@@ -1,80 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Layout.css'; // Import updated CSS
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import './Layout.css'; // Ensure your CSS file is properly linked
 
 const Layout = ({ children }) => {
   const [isShrunk, setIsShrunk] = useState(true); // Start with footer shrunk
-  const [isHovered, setIsHovered] = useState(false); // Track if footer is being hovered
-  const [activeLink, setActiveLink] = useState(''); // Track the active footer link
+  const [isHovered, setIsHovered] = useState(false); // Track footer hover state
+  const [activeLink, setActiveLink] = useState(''); // Track active link
   const navigate = useNavigate();
-  let timer; // Store the timer to clear when needed
+  const location = useLocation();
+  const timerRef = useRef(null); // Reference to the shrink timer
 
-  // Shrink the footer after 2 seconds of inactivity
+  // Start shrink timer (after 2 seconds)
   const startShrinkTimer = () => {
     if (!isHovered) {
-      timer = setTimeout(() => {
-        setIsShrunk(true); // Shrink footer after 2 seconds of no hover
+      timerRef.current = setTimeout(() => {
+        setIsShrunk(true);
       }, 2000);
     }
   };
 
-  // Expand the footer on hover (slightly)
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
+  // Handle mouse enter (expand footer)
   const handleMouseEnter = () => {
     setIsHovered(true);
-    setIsShrunk(false); // Expand the footer slightly on hover
-    clearTimeout(timer); // Clear any pending shrink timers
+    setIsShrunk(false);
+    clearTimeout(timerRef.current);
   };
 
-  // Shrink the footer after mouse leaves
+  // Handle mouse leave (start shrink timer)
   const handleMouseLeave = () => {
     setIsHovered(false);
-    startShrinkTimer(); // Start shrink timer after mouse leaves
+    startShrinkTimer();
   };
 
-  // Set the active link based on the current path
+  // Handle link click to set active link manually
   const handleLinkClick = (linkName) => {
-    setActiveLink(linkName); // Set the active link when clicked
+    setActiveLink(linkName);
   };
 
-  // Automatically set active link based on the current path
+  // Automatically set active link based on current path
   useEffect(() => {
-    const path = window.location.pathname;
+    const path = location.pathname;
     if (path.includes('dashboard')) setActiveLink('dashboard');
     else if (path.includes('post')) setActiveLink('posts');
     else if (path.includes('feed')) setActiveLink('feed');
     else if (path.includes('notifications')) setActiveLink('notifications');
-    else if (path.includes('fitness-ai')) setActiveLink('fitness-ai'); // New check for fitness-ai
-  }, [window.location.pathname]);
+    else if (path.includes('chiku-chat')) setActiveLink('chiku-chat');
+  }, [location.pathname]);
 
-  // Start the shrink timer when the page loads
+  // Restart shrink timer when hover state changes
   useEffect(() => {
-    startShrinkTimer(); // Automatically start shrinking when the page loads
-
-    // Cleanup the timer when the component is unmounted
-    return () => clearTimeout(timer);
-  }, [isHovered]); // Re-run the effect whenever `isHovered` changes
-
-  // Function to trigger Fitness AI through the backend
-  const handleStartFitness = () => {
-    fetch('http://localhost:3001S/start-fitness', { // Ensure the URL is correct
-      method: 'POST',
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Error starting Fitness AI:', error);
-      });
-  };
+    startShrinkTimer();
+    return () => clearTimeout(timerRef.current);
+  }, [isHovered]);
 
   return (
     <div className="layout-container">
       <div className="content">
-        {children} {/* Main page content */}
+        {children}
       </div>
 
-      {/* Footer - fixed at the bottom */}
       <footer
         className={`feed-footer ${isShrunk ? 'shrunk' : 'expanded'}`}
         onMouseEnter={handleMouseEnter}
@@ -82,7 +71,7 @@ const Layout = ({ children }) => {
       >
         <div className="footer-links">
           <Link
-            to="/dashboard"
+            to="/dashboard" // Navigate to /dashboard instead of /user-profile
             className={activeLink === 'dashboard' ? 'active' : ''}
             onClick={() => handleLinkClick('dashboard')}
           >
@@ -109,31 +98,26 @@ const Layout = ({ children }) => {
           >
             <i className="fas fa-bell"></i> Notifications
           </Link>
-
-          {/* Fitness AI link */}
           <Link
-            to="/fitness-ai"
-            className={activeLink === 'fitness-ai' ? 'active fitness-btn' : 'fitness-btn'}
-            onClick={handleStartFitness}
+            to="/chiku-chat"
+            className={activeLink === 'chiku-chat' ? 'active' : ''}
+            onClick={() => handleLinkClick('chiku-chat')}
           >
-            <i className="fas fa-dumbbell"></i> Fitness AI
+            <i className="fas fa-comments"></i> Chiku AI
           </Link>
-
-          {/* Logout link */}
           <Link
             to="/login"
             className="logout-link"
             onClick={() => {
               localStorage.removeItem('token');
               localStorage.removeItem('userId');
-              navigate('/login'); // Redirect to login page
+              navigate('/login');
             }}
           >
             <i className="fas fa-sign-out-alt"></i> Logout
           </Link>
         </div>
 
-        {/* Arrow icon to restore footer size */}
         <div className="footer-arrow" onClick={() => setIsShrunk(false)}>
           <i className="fas fa-arrow-up"></i>
         </div>
@@ -143,3 +127,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
