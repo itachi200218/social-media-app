@@ -1,53 +1,57 @@
 const express = require('express');
 const path = require('path');
 const { spawn } = require('child_process');
-require('dotenv').config();
+require('dotenv').config(); // Load .env variables
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Import route files
-const authRoutes = require('./routers/auth');
-const postsRoutes = require('./routers/posts');
-const dashboardRoutes = require('./routers/dashboard');
-const messageRoutes = require('./routers/messages');
-const authenticateToken = require('./middleware/auth');
-const userRoutes = require('./routers/users');
-
-// Initialize the app
 const app = express();
 
-// ✅ Allow local and deployed frontends dynamically
+// ✅ CORS setup for both local and production
 const allowedOrigins = [
-  process.env.CLIENT_URL, // Local URL
-  process.env.PRODUCTION_URL // Production URL
+  process.env.CLIENT_URL,        // e.g., http://localhost:3000
+  process.env.PRODUCTION_URL     // your deployed frontend URL
 ];
 
-// ✅ CORS middleware setup
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (e.g., curl, mobile apps)
     if (!origin) return callback(null, true);
-    
-    // If the origin matches one of the allowed URLs, allow the request
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+  credentials: true
 }));
 
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fitness AI route (serving the fitness AI page)
+// ✅ Import Routes
+const authRoutes = require('./routers/auth');
+const postsRoutes = require('./routers/posts');
+const dashboardRoutes = require('./routers/dashboard');
+const messageRoutes = require('./routers/messages');
+const userRoutes = require('./routers/users');
+const chatRoutes = require('./routers/chat'); // <-- Moved chatbot to its own file
+const authenticateToken = require('./middleware/auth');
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/chat', chatRoutes); // <-- Chat routes
+
+// Fitness AI HTML Page
 app.get('/fitness', (req, res) => {
   res.sendFile(path.join(__dirname, 'fitness.html'));
 });
 
-// Route to trigger the fitness AI Python script
+// Fitness AI Backend (Python script)
 app.post('/start-fitness', (req, res) => {
   const pythonProcess = spawn('python', ['fitness_ai.py']);
 
@@ -66,24 +70,17 @@ app.post('/start-fitness', (req, res) => {
   });
 });
 
+// Test protected route
+app.get('/api/test', authenticateToken, (req, res) => {
+  res.json({ message: 'Token is valid ✅', user: req.user });
+});
+
 // Root route
 app.get('/', (req, res) => {
   res.send('Server is up and running!');
 });
 
-// Protected test route
-app.get('/api/test', authenticateToken, (req, res) => {
-  res.json({ message: 'Token is valid ✅', user: req.user });
-});
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postsRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/users', userRoutes);
-
-// MongoDB connection
+// ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -95,7 +92,7 @@ mongoose.connect(process.env.MONGO_URL, {
   console.error('❌ Database connection failed:', err);
 });
 
-// Start server
+// ✅ Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
