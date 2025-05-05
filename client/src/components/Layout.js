@@ -39,10 +39,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="layout-container">
-      <div
-        className={`top-right-menu ${menuOpen ? 'open' : ''}`} // Add 'open' class when menu is open
-        ref={menuRef}
-      >
+     <div
+  className={`top-left-menu ${menuOpen ? 'open' : ''}`} // changed here
+  ref={menuRef}
+>
+
         <i
           className={`fas fa-bars menu-icon ${menuOpen ? 'open' : ''}`} // Add 'open' class to rotate icon
           onClick={toggleMenu} // Toggle dropdown menu
