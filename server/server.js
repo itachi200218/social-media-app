@@ -1,99 +1,176 @@
-const express = require('express');
-const path = require('path');
-const { spawn } = require('child_process');
-require('dotenv').config(); // Load .env variables
-const mongoose = require('mongoose');
-const cors = require('cors');
+import React, { useState, useEffect, useRef } from 'react';
+import './GeminiChatPage.css';
+import { API_BASE_URL } from '../utils/config';
 
-const app = express();
-
-// ✅ CORS setup for both local and production
-const allowedOrigins = [
-  process.env.CLIENT_URL,        // e.g., http://localhost:3000
-  process.env.PRODUCTION_URL     // your deployed frontend URL
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
+// Send message to Gemini API
+const sendMessageToGemini = async (message, userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication token is missing');
     }
-  },
-  credentials: true
-}));
+    console.log('Sending token:', token);  // Log token being sent
 
-// Middleware
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+    const response = await fetch(`${API_BASE_URL}/api/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ message, userId }),
+    });
 
-// ✅ Import Routes
-const authRoutes = require('./routers/auth');
-const postsRoutes = require('./routers/posts');
-const dashboardRoutes = require('./routers/dashboard');
-const messageRoutes = require('./routers/messages');
-const userRoutes = require('./routers/users');
-const chatRoutes = require('./routers/chat'); // <-- Moved chatbot to its own file
-const authenticateToken = require('./middleware/auth');
+    const data = await response.json();
+    if (response.ok) {
+      return data.response || '';
+    } else {
+      throw new Error(data.response || 'Unknown error');
+    }
+  } catch (error) {
+    console.error('Error communicating with Gemini:', error);
+    return "Sorry, there was an error communicating with Gemini.";
+  }
+};
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postsRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/chat', chatRoutes); // <-- Chat routes
+// Fetch chat history
+const fetchChatHistory = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication token is missing');
+    }
+    
+    const response = await fetch(`${API_BASE_URL}/api/chat/history`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
 
-// Fitness AI HTML Page
-app.get('/fitness', (req, res) => {
-  res.sendFile(path.join(__dirname, 'fitness.html'));
-});
+    const formattedMessages = data.history.map(entry => ({
+      sender: entry.role === 'user' ? 'user' : 'chiku',
+      text: entry.message,
+      isCode: entry.message.startsWith("```") && entry.message.endsWith("```"),
+    }));
 
-// Fitness AI Backend (Python script)
-app.post('/start-fitness', (req, res) => {
-  const pythonProcess = spawn('python', ['fitness_ai.py']);
+    return formattedMessages;
+  } catch (error) {
+    console.error('Error fetching chat history:', error);
+    return [];
+  }
+};
 
-  pythonProcess.stdout.on('data', (data) => {
-    const result = JSON.parse(data.toString());
-    console.log(result);
-    res.json(result);
-  });
+const GeminiChatPage = () => {
+  const [messages, setMessages] = useState([]);
+  const [userInput, setUserInput] = useState('');
+  const messagesEndRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
-  pythonProcess.stderr.on('data', (data) => {
-    console.error('Error:', data.toString());
-  });
+  // Scroll to bottom when messages update
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-  pythonProcess.on('close', (code) => {
-    console.log(`Python process exited with code ${code}`);
-  });
-});
+  // Load chat history on mount
+  useEffect(() => {
+    const loadChat = async () => {
+      const history = await fetchChatHistory();
+      setMessages(history);
+    };
+    loadChat();
+  }, []);
 
-// Test protected route
-app.get('/api/test', authenticateToken, (req, res) => {
-  res.json({ message: 'Token is valid ✅', user: req.user });
-});
+  // Handle sending message
+  const handleSendMessage = async () => {
+    if (userInput.trim()) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'user', text: userInput },
+      ]);
+      const inputToSend = userInput;
+      setUserInput('');
+      setLoading(true);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Server is up and running!');
-});
+      try {
+        const geminiResponse = await sendMessageToGemini(inputToSend);
 
-// ✅ Connect to MongoDB
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log('✅ Database connected');
-})
-.catch((err) => {
-  console.error('❌ Database connection failed:', err);
-});
+        if (!geminiResponse) {
+          throw new Error('No response from Gemini');
+        }
 
-// ✅ Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+        const isCode = geminiResponse.startsWith("```") && geminiResponse.endsWith("```");
+
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: 'chiku',
+            text: geminiResponse,
+            isCode,
+          },
+        ]);
+      } catch (error) {
+        console.error('Error:', error);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: 'chiku', text: "Sorry, there was an error communicating with Gemini." },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+
+  // Handle Enter key
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
+  return (
+    <div className="gemini-chat-page">
+      <h2>Chiku AI</h2>
+      <div className="chatbox">
+        <div className="messages">
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              <div className={`message-bubble ${msg.isCode ? 'code-block' : ''}`}>
+                {msg.isCode ? (
+                  <pre className="code-box">{msg.text.replace(/```/g, '')}</pre>
+                ) : (
+                  msg.text
+                )}
+              </div>
+            </div>
+          ))}
+
+          {loading && (
+            <div className="message chiku">
+              <div className="spinner-wrapper">
+                <div className="spinner" />
+                <div className="typing">Chiku is typing...</div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="input-container">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Type your message"
+            autoFocus
+          />
+          <button onClick={handleSendMessage}>Send</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GeminiChatPage;
