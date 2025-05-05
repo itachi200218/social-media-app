@@ -3,13 +3,14 @@
   min-height: 100vh;
 }
 
-.top-right-menu {
+.top-left-menu {
   position: fixed;
   top: 15px;
-  right: 15px;
+  left: 15px;
   z-index: 1000;
   transition: top 0.3s ease;
 }
+
 
 .menu-icon {
   font-size: 2rem;
@@ -53,10 +54,12 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.top-right-menu.open .dropdown {
+.top-left-menu.open .dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  left: 0;
+  right: auto;
 }
 
 .dropdown a {
