@@ -174,3 +174,8 @@ const GeminiChatPage = () => {
 };
 
 export default GeminiChatPage;
+    </div>
+  );
+};
+
+export default GeminiChatPage;
