@@ -39,7 +39,7 @@ const fetchChatHistory = async () => {
     if (!token) {
       throw new Error('Authentication token is missing');
     }
-    
+
     const response = await fetch(`${API_BASE_URL}/api/chat/history`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -120,7 +120,6 @@ const GeminiChatPage = () => {
     }
   };
 
-
   // Handle Enter key
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -128,6 +127,7 @@ const GeminiChatPage = () => {
       handleSendMessage();
     }
   };
+
   return (
     <div className="gemini-chat-page">
       <h2>Chiku AI</h2>
@@ -174,8 +174,4 @@ const GeminiChatPage = () => {
 };
 
 export default GeminiChatPage;
-    </div>
-  );
-};
 
-export default GeminiChatPage;
