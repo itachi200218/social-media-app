@@ -11,7 +11,7 @@ Full-stack social media platform built with **MERN** stack and advanced features
 **Features:**  
 - User **registration & login** with secure authentication  
 - **Posts feed** with create, read, update, delete functionality  
-- **User profiles** with editable information  
+- **User profiles** with editable information 
 - **End-to-end chat** system  
 - AI-powered **recommendations and suggestions** using Gemini AI  
 - Fully responsive UI for seamless desktop and mobile experience  
