@@ -1,0 +1,110 @@
+/* Register.css */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .register-form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  
+  .input-group label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .input-group input:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
+    font-size: 0.875rem;
+    margin-top: 10px;
+  }
+  
+  .register-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .register-btn:disabled {
+    background-color: #ccc;
+  }
+  
+  .register-btn:hover:enabled {
+    background-color: #45a049;
+  }
+  
+  .login-link {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .login-link-text {
+    color: #007BFF;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .login-link-text:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .register-container {
+      padding: 10px;
+    }
+  
+    .register-form {
+      padding: 1.5rem;
+      width: 90%;
+    }
+  }
+  

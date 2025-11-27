@@ -1,0 +1,152 @@
+/* Feed Container */
+.feed-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  background: linear-gradient(135deg, #e0f7fa 0%, #f0f4f8 100%); /* Lighter gradient for a softer feel */
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+/* Content inside Feed */
+.feed-content {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 16px; /* Slightly more rounded corners */
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12); /* Stronger shadow for depth */
+  width: 100%;
+  max-width: 960px; /* Wider content area for better readability */
+  transform: scale(0.98);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.6s ease-out; /* Fade-in effect */
+}
+
+.feed-content:hover {
+  transform: scale(1.02); /* Slightly bigger on hover for emphasis */
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18); /* Enhanced shadow effect */
+}
+
+/* Fade-in keyframe animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Heading styling */
+h2 {
+  color: #333;
+  font-size: 2.5rem; /* Bigger heading for better prominence */
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+h2:hover {
+  color: #009688; /* Change to a cooler greenish shade */
+}
+
+/* Post List */
+.post-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+/* Post Item */
+.post-item {
+  margin-bottom: 30px; /* Increased space between posts */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-item:hover {
+  transform: translateY(-8px); /* Lift the post on hover */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); /* Subtle shadow effect */
+}
+
+/* Post Card */
+.post-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 16px; /* More rounded corners */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  background-color: #f1f1f1; /* Slight color change on hover */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Post Content */
+.post-content {
+  color: #444;
+  font-size: 1.2rem; /* Slightly larger font size for readability */
+  line-height: 1.7;
+  margin-bottom: 18px;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.post-content:hover {
+  color: #009688; /* Change color on hover */
+}
+
+/* Post Image */
+.post-image {
+  width: 100%;
+  max-height: 380px; /* Increased height for images */
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 20px; /* Space below the image */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.post-image:hover {
+  transform: scale(1.08); /* Zoom effect for image hover */
+  opacity: 0.85; /* Slight dimming effect */
+}
+
+
+
+
+/* Fixed Footer */
+.feed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  z-index: 1000; /* Ensures it stays above other content */
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-links a, .footer-links button {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-links button:hover, .footer-links a:hover {
+  color: #007bff;
+}

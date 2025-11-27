@@ -1,0 +1,9 @@
+*.pyd filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+# Ignore Python files in the fitness_ai folder for language stats
+/fitness_ai/* linguist-vendored
+
+# Explicitly include JavaScript files in server and client directories
+/client/* linguist-documentation
+/server/* linguist-documentation

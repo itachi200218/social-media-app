@@ -1,0 +1,68 @@
+/* User.css */
+
+.user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .user-profile {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-profile .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .user-profile h5 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .user-profile p {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+  }
+  
+  .follow-button-container {
+    margin-top: 20px;
+  }
+  
+  .follow-button-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .follow-button-container button:hover {
+    background-color: #4CAF50; /* Green color on hover */
+    color: white;
+  }
+  
+  .following-button {
+    background-color: #FF4081; /* Pink color for unfollow */
+  }
+  
+  .unfollow-button {
+    background-color: #4CAF50; /* Green color for follow */
+  }
+  
+  /* Loading Spinner Styles */
+  .spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  

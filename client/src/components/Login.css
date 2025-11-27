@@ -1,0 +1,117 @@
+/* General container for the login screen */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #74ebd5, #9face6); /* Soft gradient background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Login form styles */
+  .login-form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 3rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    transform: scale(0.98); /* Slight scale down for animation effect */
+    transition: transform 0.3s ease;
+  }
+  
+  .login-form:hover {
+    transform: scale(1); /* Hover effect to make the form "pop" */
+  }
+  
+  /* Heading styling */
+  h2 {
+    color: #333;
+    font-size: 2.2rem;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+  }
+  
+  /* Input fields */
+  input {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  
+  button:hover:enabled {
+    background-color: #45a049;
+    transform: translateY(-2px); /* Subtle button hover effect */
+  }
+  
+  button:active {
+    transform: translateY(1px); /* Slight press effect */
+  }
+  
+  /* Error message */
+  p {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+  
+  /* Register link styles */
+  p span {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  p span:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Responsive design for small screens */
+  @media (max-width: 480px) {
+    .login-form {
+      width: 90%;
+      padding: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.8rem;
+    }
+    
+    input, button {
+      padding: 12px;
+      font-size: 1rem;
+    }
+  }
+  
